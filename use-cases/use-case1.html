@@ -11,47 +11,82 @@
   <canvas id="gitGraph"></canvas>
   <script src="../resources/gitgraph.js"></script>
   <script>
+    var myTemplateConfig = {
+    colors: [ "DimGray", "CadetBlue", "Aquamarine", "CornflowerBlue", "DeepPink", "GreenYellow", "DarkGoldenRod", "IndianRed" ], // branches colors, 1 per column,
+    author: '',
+    branch: {
+      lineWidth: 3,
+      spacingX: 25,
+      showLabel: true,                  // display branch names on graph
+    },
+    orientation: 'vertical-revers',
+    commit: {
+      spacingY: -80,
+      dot: {
+        size: 12
+      },
+      message: {
+        displayAuthor: true,
+        displayBranch: false,
+        displayHash: false,
+        font: "normal 12pt Arial"
+      },
+      shouldDisplayTooltipsInCompactMode: false, // default = true
+      tooltipHTMLFormatter: function ( commit ) {
+        return "" + commit.sha1 + "" + ": " + commit.message;
+      }
+    }
+  };
     var gitgraph = new GitGraph({
-      template: "metro",
-      orientation: "vertical-reverse",
-      mode: "extended"
+      template: myTemplateConfig,
+      orientation: 'vertical-reverse'
     });
     var master = gitgraph.branch("master");
-    gitgraph.commit().commit().commit();         // 3 commits upon HEAD
+    gitgraph.commit({
+      message: 'Initial repo creation',
+      author: '<Naveen>'
+    }).commit({
+      message: 'Intial prep work',
+      author: '<Naveen>'
+    }).commit({
+      message: 'Application architecture laid out', 
+      author: '<Naveen>'
+    });         // 3 commits upon HEAD
     var develop = gitgraph.branch("develop");    // New branch from HEAD
-    // var myfeature = develop.branch("myfeature"); // New branch from develops
-    var release1 = develop.branch({
-      color: 'green',
-      name: "R1.0"
-    });
-    var sprint1 = release1.branch({
-      name: "Sprint 1",
-      color: 'teal'
-    });
-    var userStory1 = sprint1.branch({
-      name: "S-12345_AOS_Save_And_Fetch_API",
-      color: 'gold'
-    });
-
-    // Well, if you need to go deeper…
-
-    var hotfix = gitgraph.branch({
-      parentBranch: develop,
-      name: "hotfix",
-      column: 2             // which column index it should be displayed in
-    });
-    master.commit("This commit is mine"); // Add a commit on master branch
     develop.commit({
       dotColor: "white",
       dotSize: 10,
       dotStrokeWidth: 10,
       sha1: "666",
-      message: "Pimp dat commit",
-      author: "Jacky <prince@dutunning.com>",
+      message: "Just to differentiate from master",
+      author: "<R86068>",
       // tag: "a-super-tag",
       onClick: function(commit) {
         console.log("Oh, you clicked my commit?!", commit);
       }
+    });
+
+    var release1 = develop.branch({
+      name: "R1.0"
+    });
+
+    release1.commit({
+      dotColor: "white",
+      dotSize: 10,
+      dotStrokeWidth: 10,
+      sha1: "666",
+      message: "Just to differentiate from develop",
+      author: "<R86068>"
+    });
+
+    var sprint1 = release1.branch({
+      name: "Sprint 1"
+    });
+    var userStory1 = sprint1.branch({
+      name: "S-12345_AOS_Save_And_Fetch_API"
+    });
+    var userStory2 = sprint1.branch({
+      name: "S-12346_AOS_Table_Creation"
     });
     // develop.merge(master, {dotColor: 'red',  message: "New release", /* tag: "v1.0.0" */ });
 
@@ -61,7 +96,7 @@
       dotStrokeWidth: 10,
       sha1: "666",
       message: "WIP - Initial Commit",
-      author: "R68068",
+      author: "<R68068>",
     });
 
     userStory1.commit({
@@ -70,14 +105,63 @@
       dotStrokeWidth: 10,
       sha1: "666",
       message: "Done with Fetch and Save APIs",
-      author: "R68068"
+      author: "<R68068>"
     });
 
-    userStory1.merge(sprint1, {dotColor: 'red',  message: "New release", /* tag: "v1.0.0" */ });
-    sprint1.merge(release1, {dotColor: 'red',  message: "New release", /* tag: "v1.0.0" */ });
-    release1.merge(develop, {color: 'gold'});
-    develop.merge(master, {color: 'gold'});
+    userStory2.commit({
+      dotColor: "white",
+      dotSize: 10,
+      dotStrokeWidth: 10,
+      sha1: "666",
+      message: "Creating Keyspace",
+      author: "Sam",
+    });
 
+    userStory2.commit({
+      dotColor: "white",
+      dotSize: 10,
+      dotStrokeWidth: 10,
+      sha1: "666",
+      message: "Done with DDL",
+      author: "<Sam>"
+    });
+
+    userStory2.commit({
+      dotColor: "white",
+      dotSize: 10,
+      dotStrokeWidth: 10,
+      sha1: "666",
+      message: "Done with DML for test data",
+      author: "<Sam>"
+    });
+
+    userStory1.merge(sprint1, {dotColor: 'red',  message: "API Story Completed", author: 'JM' /* tag: "v1.0.0" */ });
+    userStory2.merge(sprint1, {dotColor: 'red',  message: "DBStory Completed", author: 'JM' /* tag: "v1.0.0" */ });
+    sprint1.merge(release1, {dotColor: 'red',  message: "Sprint Completed", author: 'JM'  /* tag: "v1.0.0" */ });
+    release1.merge(develop, {dotColor: 'red', message: "R-1.0 Completed", author: 'JM' });
+    develop.merge(master, {dotColor: 'red'});
+    var hotFix = develop.branch({
+      name: "R1.0.1"
+    });
+    hotFix.commit({
+      dotColor: "white",
+      dotSize: 10,
+      dotStrokeWidth: 10,
+      sha1: "666",
+      message: "Fix for Defect D-34567, D-45232",
+      author: "<Naveen>"
+    });
+    var release2 = develop.branch({
+      name: "R2.0"
+    });
+    release2.commit({
+      dotColor: "white",
+      dotSize: 10,
+      dotStrokeWidth: 10,
+      sha1: "666",
+      message: "Release 2 User stories",
+      author: "<Naveen>"
+    });
   </script>
   <a href="../index.html"> &lt; Back</a>
 </body>
