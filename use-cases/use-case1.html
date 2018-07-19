@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="../resources/gitgraph.css">
+  <title>Document</title>
+</head>
+<body>
+  <canvas id="gitGraph"></canvas>
+  <script src="../resources/gitgraph.js"></script>
+  <script>
+    var gitgraph = new GitGraph({
+      template: "metro",
+      orientation: "vertical-reverse",
+      mode: "extended"
+    });
+    var master = gitgraph.branch("master");
+    gitgraph.commit().commit().commit();         // 3 commits upon HEAD
+    var develop = gitgraph.branch("develop");    // New branch from HEAD
+    // var myfeature = develop.branch("myfeature"); // New branch from develops
+    var release1 = develop.branch({
+      color: 'green',
+      name: "R1.0"
+    });
+    var sprint1 = release1.branch({
+      name: "Sprint 1",
+      color: 'teal'
+    });
+    var userStory1 = sprint1.branch({
+      name: "S-12345_AOS_Save_And_Fetch_API",
+      color: 'gold'
+    });
+
+    // Well, if you need to go deeper…
+
+    var hotfix = gitgraph.branch({
+      parentBranch: develop,
+      name: "hotfix",
+      column: 2             // which column index it should be displayed in
+    });
+    master.commit("This commit is mine"); // Add a commit on master branch
+    develop.commit({
+      dotColor: "white",
+      dotSize: 10,
+      dotStrokeWidth: 10,
+      sha1: "666",
+      message: "Pimp dat commit",
+      author: "Jacky <prince@dutunning.com>",
+      // tag: "a-super-tag",
+      onClick: function(commit) {
+        console.log("Oh, you clicked my commit?!", commit);
+      }
+    });
+    // develop.merge(master, {dotColor: 'red',  message: "New release", /* tag: "v1.0.0" */ });
+
+    userStory1.commit({
+      dotColor: "white",
+      dotSize: 10,
+      dotStrokeWidth: 10,
+      sha1: "666",
+      message: "WIP - Initial Commit",
+      author: "R68068",
+    });
+
+    userStory1.commit({
+      dotColor: "white",
+      dotSize: 10,
+      dotStrokeWidth: 10,
+      sha1: "666",
+      message: "Done with Fetch and Save APIs",
+      author: "R68068"
+    });
+
+    userStory1.merge(sprint1, {dotColor: 'red',  message: "New release", /* tag: "v1.0.0" */ });
+    sprint1.merge(release1, {dotColor: 'red',  message: "New release", /* tag: "v1.0.0" */ });
+    release1.merge(develop, {color: 'gold'});
+    develop.merge(master, {color: 'gold'});
+
+  </script>
+  <a href="../index.html"> &lt; Back</a>
+</body>
+</html>
