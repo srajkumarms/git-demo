@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="../resources/gitgraph.css">
+  <title>Rebase</title>
+</head>
+<body>
+  <section>
+    <h4>Usecase:</h4>
+    Two developers working on their respective featuresets and wish to create Merge Request(MR) namely Feature1 and Feature2. <br />
+    <i>For better explanation, we will skip showing master, develop branches. We will depict release, sprint and feature branches here.</i>
+  </section>
+
+  <h3>
+      Rebase
+  </h3>
+  <canvas id="gitGraph"></canvas>
+
+  <script src="../resources/gitgraph.js"></script>
+  <script src="../resources/config.js"></script>
+  <script>
+
+    (function() {
+
+      var gitgraph = new GitGraph({
+        template: myTemplateConfig,
+        orientation: 'vertical-reverse',
+        reverseArrow: true,
+      });
+  
+      var release1 = gitgraph.branch({
+        name: "R1.0"
+      });
+  
+      release1.commit({
+        dotColor: "white",
+        dotSize: 10,
+        dotStrokeWidth: 10,
+        sha1: "666",
+        message: "Just to differentiate from develop",
+        author: "<R86068>"
+      });
+  
+      var sprint1 = release1.branch({
+        name: "Sprint 1"
+      });
+      var userStory1 = sprint1.branch({
+        name: "Feature1"
+      });
+      var userStory2 = sprint1.branch({
+        name: "Feature2"
+      });
+  
+      userStory1.commit({
+        dotColor: "white",
+        dotSize: 10,
+        dotStrokeWidth: 10,
+        sha1: "666",
+        message: "WIP - Initial Commit",
+        author: "<R68068>",
+      });
+  
+      userStory1.commit({
+        dotColor: "white",
+        dotSize: 10,
+        dotStrokeWidth: 10,
+        sha1: "666",
+        message: "Done with Fetch and Save APIs",
+        author: "<R68068>"
+      });
+  
+      userStory2.commit({
+        dotColor: "white",
+        dotSize: 10,
+        dotStrokeWidth: 10,
+        sha1: "666",
+        message: "Creating Keyspace",
+        author: "Sam",
+      });
+  
+      userStory2.commit({
+        dotColor: "white",
+        dotSize: 10,
+        dotStrokeWidth: 10,
+        sha1: "666",
+        message: "Done with DDL & DML",
+        author: "<Sam>"
+      });
+      
+      userStory1.merge(sprint1, {dotColor: 'red',  message: "API Story Completed", author: 'JM' /* tag: "v1.0.0" */ });
+      sprint1.merge(userStory2, { dotColor: 'gold',  message: "Rebase onto Sprint1 branch", author: 'JM' /* tag: "v1.0.0" */ });
+      userStory2.merge(sprint1, {dotColor: 'red',  message: "DBStory Completed", author: 'JM' /* tag: "v1.0.0" */ });
+      sprint1.merge(release1, {dotColor: 'red',  message: "Sprint Completed", author: 'JM'  /* tag: "v1.0.0" */ });
+    })();
+    
+  </script>
+  <a href="../index.html"> &lt; Back</a>
+</body>
+</html>
