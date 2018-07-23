@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Best Practices</title>
+</head>
+<body>
+  <h3>Best Practices</h3>
+  <h4>
+    <i>
+      These are some best practices that we can adhere to for our project. Best practices are not limited to this list and any suggesstions to improve the process 
+      will be added to the list.
+    </i>
+  </h4>
+  <ol>
+    <li>
+      <b>Branch:</b> 
+      <ul>
+        <li>
+          Create branch names that reflect the Userstory or defect. &lt;Userstory | Defect Number&gt;_&lt;Description&gt;
+          For Ex: <code>B-46972_AOS_Save_And_Fetch</code>
+        </li>
+        <li>
+          Create separate branch for each stories/defects.
+        </li>
+        <li>
+          Let us ensure that we are not stepping on each other branches.
+        </li>
+        <li>
+          Delete the remote branch as soon as a merge request is merged to master/develop branch. This ensures that no one is using outdated branches.
+        </li>
+        <li>
+          Before you delete your branch, please ensure that feature branch is approved and merged to master
+        </li>
+        <li>
+          Delete your local feature branch as well.
+        </li>
+        <li>
+          Always watch for GitLab/Slack for new MRs and it status. 
+        </li>
+        <li>
+          Rebase your branch if any previous MRs were approved and merged.
+        </li>
+      </ul>
+    </li>
+    <li>
+      <b>Approval:</b>
+      <ul>
+        <li>
+          We will have minimum 2 approvers and maximum of 3 approvers per merge request. <b>It's always good to have extra pairs of eyes.</b>
+        </li>
+        <li>
+          To approve merge requests
+          <ol>
+            <li>
+              Please checkout/switch to the merge request branch.
+            </li>
+            <li>
+              Do a unit test to ensure that any functionality isn't broken.
+            </li>
+            <li>
+              In case of client side MR, please ensure that we don't see any JS errors on the console.
+            </li>
+            <li>
+              Have a detailed review at the code. This is to ensure that erroneous code getting into codebase.
+            </li>
+            <li>
+              Please take MRs as high priority and provide your approval ASAP.
+            </li>
+          </ol>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <b>Review:</b>
+      <ul>
+        <li>
+          Reviews make our codebase stronger, error free and fool proof.
+        </li>
+        <li>
+          Approach review comments positively. Review comments aren't to point fingers on others.
+        </li>
+        <li>
+          Provide code snippets in comments wherever you feel comments can't express your idea.
+        </li>
+        <li>
+          By reviewing others work, you are getting a different dimension of coding constructs. The more you review the more you learn.
+        </li>
+      </ul>
+    </li>
+  </ol>
+</body>
+</html>
